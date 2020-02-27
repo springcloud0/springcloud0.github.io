@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>人工神经网络学习笔记（3） - 好多鱼</title>
+
+
+    <meta name="description" content="Python-numpy编码实现人工神经网络 前面的几篇文章我们熟悉了人工神经网络的数学原理及其推导过程，但有道是‘纸上得来终觉浅’，是时候将理论变为现实了。现在我们将应用Python语言以及其强大的扩充程序库Numpy来编写一个简单的神经网络。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工神经网络学习笔记（3）">
+<meta property="og:url" content="http://www.songaw.com/2019/06/07/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/index.html">
+<meta property="og:site_name" content="好多鱼">
+<meta property="og:description" content="Python-numpy编码实现人工神经网络 前面的几篇文章我们熟悉了人工神经网络的数学原理及其推导过程，但有道是‘纸上得来终觉浅’，是时候将理论变为现实了。现在我们将应用Python语言以及其强大的扩充程序库Numpy来编写一个简单的神经网络。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/ml_2.png">
+<meta property="article:published_time" content="2019-06-07T04:02:15.000Z">
+<meta property="article:modified_time" content="2019-12-10T17:46:20.000Z">
+<meta property="article:author" content="haoduoyu">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/ml_2.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/5.12.0-1/css/all.css">
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="人工神经网络学习笔记（3）" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="My GitHub" href="https://github.com/springcloud0/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-10-tablet is-10-desktop is-10-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/ml_2.png" alt="人工神经网络学习笔记（3）">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-06-07T04:02:15.000Z">2019-06-07</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    16 分钟 读完 (大约 2365 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                人工神经网络学习笔记（3）
+            
+        </h1>
+        <div class="content">
+            <h3 id="Python-numpy编码实现人工神经网络"><a href="#Python-numpy编码实现人工神经网络" class="headerlink" title="Python-numpy编码实现人工神经网络"></a>Python-numpy编码实现人工神经网络</h3><hr>
+<p>前面的几篇文章我们熟悉了人工神经网络的数学原理及其推导过程，但有道是‘纸上得来终觉浅’，是时候将理论变为现实了。现在我们将应用Python语言以及其强大的扩充程序库<a href="https://www.runoob.com/numpy/numpy-tutorial.html">Numpy</a>来编写一个简单的神经网络。</p>
+<a id="more"></a>
+
+<hr>
+<h4 id="准备数据："><a href="#准备数据：" class="headerlink" title="准备数据："></a>准备数据：</h4><ul>
+<li><strong>训练集and测试集：</strong><a href="git@github.com:makeyourownneuralnetwork/makeyourownneuralnetwork.git">Mnist手写数字数据集(复制git链接克隆)</a>MINST数据库是由米国机器学习大佬Yann提供的手写数字数据库文件，其官方下载地址<a href="http://yann.lecun.com/exdb/mnist/">Download Mnist</a>。该数据集将会是神经网络的输入信号。</li>
+</ul>
+<p>每一张图片像素都为$28\times 28$,因此可作为一个$784\times 1$的向量传入神经网络。</p>
+<div align=center>
+
+<p><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/20190607010119916.png" alt="单个图片"><br><img src="/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/20190607015526334.png" alt=""></p>
+</div>
+
+<ul>
+<li>初始花链接权重矩阵：使用正态概率分布采样权重，平均值为0，标准方差为结点传入链接数目的开方，即$\frac{1}{\sqrt{inputconnects}}$</li>
+</ul>
+<hr>
+<h4 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h4><p>下面的代码实现了一个双隐层的神经网络，但是它的表现并不好（最起码在Mnist数据集的表现上差强人意），我训练了5个小时（5世代）也只能达到%96.54的准确率。相比而言当隐层的神经网络在Mnist数据集上的表现更好，三个小时（5世代）可以达到%97.34的准确率。你可以注释掉下面的部分代码将其退回到单隐层结构甚至加到三隐层结构。虽然代码写的很乱但代码中每一句都有详细的注释，别介意哈哈哈。<br>包含两个源代码文件：</p>
+<ul>
+<li>neural_network.py 包含神经网络主类用于训练神经网络</li>
+<li>network_test.py 用于测试神经网络</li>
+</ul>
+<hr>
+<p> <font size=3px face='黑体' color=green> neural_network.py </font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> scipy.special</span><br><span class="line"><span class="keyword">import</span> scipy.ndimage.interpolation</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> progressbar</span><br><span class="line"><span class="keyword">import</span> matplotlib.animation <span class="keyword">as</span> anim</span><br><span class="line"></span><br><span class="line"><span class="comment"># 神经网络类定义</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">neuralNetwork</span>:</span></span><br><span class="line">	<span class="comment"># 初始化神经网络</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,inputnodes,hiddennodes,hiddennodes_2,outputnodes,learningrate)</span>:</span></span><br><span class="line">		<span class="comment"># 设置神经网络的输入层、隐藏层、输出层、的结点数和学习率</span></span><br><span class="line">		self.inodes = inputnodes</span><br><span class="line">		self.hnodes = hiddennodes                <span class="comment"># 第一隐藏层结点数</span></span><br><span class="line">		self.hnodes_2 = hiddennodes_2            <span class="comment"># 第二隐藏层结点数</span></span><br><span class="line">		<span class="comment">#self.hnodes_3 = hiddennodes_3            # 第三隐藏层结点数</span></span><br><span class="line">		self.onodes = outputnodes</span><br><span class="line">		<span class="comment"># 学习率</span></span><br><span class="line">		self.lr = learningrate</span><br><span class="line">		</span><br><span class="line">		<span class="comment"># （常规版）链接权重矩阵,随机权重在-0.5至0.5之间（三层神经网络）</span></span><br><span class="line">		self.wih = (numpy.random.rand(hiddennodes,inputnodes)<span class="number">-0.5</span>)            </span><br><span class="line">		self.who = (numpy.random.rand(outputnodes,hiddennodes)<span class="number">-0.5</span>)           </span><br><span class="line">		<span class="comment"># （进阶版）链接权重矩阵,随机权重在-0.5至0.5之间（三层神经网络）</span></span><br><span class="line">		self.wih_ = numpy.random.normal(<span class="number">0.0</span>,pow(self.hnodes,<span class="number">-0.5</span>),(hiddennodes,inputnodes))          <span class="comment"># 输入层到第一隐藏层权重矩阵</span></span><br><span class="line">		self.wh12_ = numpy.random.normal(<span class="number">0.0</span>,pow(self.hnodes_2,<span class="number">0.5</span>),(hiddennodes_2,hiddennodes))     <span class="comment"># 第一隐藏层到第二隐藏层权重矩阵</span></span><br><span class="line">		<span class="comment">#self.wh23_ = numpy.random.normal(0.0,pow(self.hnodes_3,0.5),(hiddennodes_3,hiddennodes_2))   # 第二隐藏层到第三隐藏层权重矩阵</span></span><br><span class="line">		self.who_ = numpy.random.normal(<span class="number">0.0</span>,pow(self.onodes,<span class="number">-0.5</span>),(outputnodes,hiddennodes_2))         <span class="comment"># 第三隐藏层到输出层权重矩阵</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">#定义激活函数，由scipy库提供</span></span><br><span class="line">		self.activation_function = <span class="keyword">lambda</span> x : scipy.special.expit(x)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 训练神经网络</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(self,inputs_list,targets_list)</span>:</span></span><br><span class="line">		<span class="comment"># 将输入信号列表和目标信号列表转换成列向量</span></span><br><span class="line">		inputs = numpy.array(inputs_list,ndmin=<span class="number">2</span>).T</span><br><span class="line">		targets = numpy.array(targets_list,ndmin=<span class="number">2</span>).T</span><br><span class="line"></span><br><span class="line">		<span class="comment"># 第一隐藏层的输入信号：</span></span><br><span class="line">		hidden_inputs = numpy.dot(self.wih_,inputs)</span><br><span class="line">		<span class="comment"># 第一隐藏层的输出信号（激活函数作用）：</span></span><br><span class="line">		hidden_outputs = self.activation_function(hidden_inputs)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># 第二隐藏层的输入信号:</span></span><br><span class="line">		hidden_inputs_2 = numpy.dot(self.wh12_,hidden_outputs)</span><br><span class="line">		<span class="comment"># 第二层隐藏层的输出信号：</span></span><br><span class="line">		hidden_outputs_2 = self.activation_function(hidden_inputs_2)</span><br><span class="line">		<span class="string">'''</span></span><br><span class="line"><span class="string">		# 第三隐藏层的输入信号：</span></span><br><span class="line"><span class="string">		hidden_inputs_3 = numpy.dot(self.wh23_,hidden_outputs_2)</span></span><br><span class="line"><span class="string">		# 第三隐藏层的输出信号：</span></span><br><span class="line"><span class="string">		hidden_outputs_3 = self.activation_function(hidden_inputs_3)</span></span><br><span class="line"><span class="string">		'''</span></span><br><span class="line">		<span class="comment"># 输出层的输入信号：</span></span><br><span class="line">		final_inputs = numpy.dot(self.who_,hidden_outputs_2)</span><br><span class="line">		<span class="comment"># 输出层的输出信号：</span></span><br><span class="line">		final_outputs = self.activation_function(final_inputs)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># 计算输出层误差向量</span></span><br><span class="line">		output_errors = targets - final_outputs</span><br><span class="line">		<span class="comment"># 计算第三隐藏层误差向量</span></span><br><span class="line">		<span class="comment">#hidden_errors_3 = numpy.dot(self.who_.T,output_errors)</span></span><br><span class="line">		<span class="comment"># 计算第二隐藏层的误差向量</span></span><br><span class="line">		hidden_errors_2 = numpy.dot(self.who_.T,output_errors)</span><br><span class="line">		<span class="comment"># 计算第一隐藏层的误差向量</span></span><br><span class="line">		hidden_errors = numpy.dot(self.wh12_.T,hidden_errors_2)</span><br><span class="line"></span><br><span class="line">		<span class="string">''' 优化链接权重值 '''</span></span><br><span class="line">		<span class="comment"># 第三隐藏层与输出层间的链接权重优化</span></span><br><span class="line">		<span class="comment">#self.who_ += self.lr * numpy.dot((output_errors * final_outputs * (1.0 - final_outputs)),numpy.transpose(hidden_outputs_3))</span></span><br><span class="line">		<span class="comment"># 第二隐藏层与第三隐藏层间的链接权重优化</span></span><br><span class="line">		self.who_ += self.lr * numpy.dot((output_errors * final_outputs * (<span class="number">1.0</span> - final_outputs)),numpy.transpose(hidden_outputs_2))</span><br><span class="line">		<span class="comment"># 第一隐藏层与第二隐藏层间的链接权重优化</span></span><br><span class="line">		self.wh12_ += self.lr * numpy.dot((hidden_errors_2 * hidden_outputs_2 * (<span class="number">1.0</span> - hidden_outputs_2)),numpy.transpose(hidden_outputs))</span><br><span class="line">		<span class="comment"># 输入层与第一隐藏层间的链接权重优化</span></span><br><span class="line">		self.wih_ += self.lr * numpy.dot((hidden_errors * hidden_outputs * (<span class="number">1.0</span> - hidden_outputs)),numpy.transpose(inputs))</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		<span class="comment">#return self.query(inputs_list)</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 查询</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">query</span><span class="params">(self,inputs_list)</span>:</span></span><br><span class="line">		<span class="comment"># 将输入列表转成numpy向量对象并转置为列向量</span></span><br><span class="line">		inputs = numpy.array(inputs_list,ndmin=<span class="number">2</span>).T</span><br><span class="line">		<span class="comment"># 第一隐藏层结点的输入信号：权重矩阵与输入信号向量的乘积</span></span><br><span class="line">		self.hidden_inputs = numpy.dot(self.wih_,inputs)</span><br><span class="line">		<span class="comment"># 第一隐藏层结点的输出信号：经过S函数的加权求和值</span></span><br><span class="line">		self.hidden_outputs = self.activation_function(self.hidden_inputs)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># 第二隐藏层的输入信号:</span></span><br><span class="line">		self.hidden_inputs_2 = numpy.dot(self.wh12_,self.hidden_outputs)</span><br><span class="line">		<span class="comment"># 第二层隐藏层的输出信号：</span></span><br><span class="line">		self.hidden_outputs_2 = self.activation_function(self.hidden_inputs_2)</span><br><span class="line">		<span class="string">'''</span></span><br><span class="line"><span class="string">		# 第三隐藏层的输入信号：</span></span><br><span class="line"><span class="string">		self.hidden_inputs_3 = numpy.dot(self.wh23_,self.hidden_outputs_2)</span></span><br><span class="line"><span class="string">		# 第三隐藏层的输出信号：</span></span><br><span class="line"><span class="string">		self.hidden_outputs_3 = self.activation_function(self.hidden_inputs_3)</span></span><br><span class="line"><span class="string">		'''</span></span><br><span class="line">		<span class="comment"># 输出层结点的输入信号：</span></span><br><span class="line">		self.final_inputs = numpy.dot(self.who_,self.hidden_outputs_2)</span><br><span class="line">		<span class="comment"># 输出层结点的最终输出信号：</span></span><br><span class="line">		self.final_outputs = self.activation_function(self.final_inputs)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># 返回最终输出信号</span></span><br><span class="line">		<span class="keyword">return</span> self.final_outputs</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(Network,test_dataset_name)</span>:</span></span><br><span class="line">	Network.wih_ = numpy.loadtxt(<span class="string">'wih_file.csv'</span>)</span><br><span class="line">	Network.wh12_ = numpy.loadtxt(<span class="string">'wh12_file.csv'</span>)</span><br><span class="line">	<span class="comment">#Network.wh23_ = numpy.loadtxt('wh23_file.csv')</span></span><br><span class="line">	Network.who_ = numpy.loadtxt(<span class="string">'who_file.csv'</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 准备测试数据</span></span><br><span class="line">	test_data_file = open(test_dataset_name,<span class="string">'r'</span>)</span><br><span class="line">	test_data_list = test_data_file.readlines()</span><br><span class="line">	test_data_file.close()</span><br><span class="line"></span><br><span class="line">	print(<span class="string">'\n'</span>)</span><br><span class="line">	print(<span class="string">"Testing...\n"</span>)</span><br><span class="line">	<span class="comment"># 统计</span></span><br><span class="line">	correct_test = <span class="number">0</span></span><br><span class="line">	all_test = <span class="number">0</span></span><br><span class="line">	correct = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line">	num_counter = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">	<span class="comment">#测试进度条</span></span><br><span class="line">	p_test = progressbar.ProgressBar()</span><br><span class="line">	p_test.start(len(test_data_list))</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 动画显示</span></span><br><span class="line">	<span class="comment">#plt.figure(1)</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> imag_list <span class="keyword">in</span> test_data_list:</span><br><span class="line">		all_values = imag_list.split(<span class="string">','</span>)</span><br><span class="line">		lable = int(all_values[<span class="number">0</span>])</span><br><span class="line">		scaled_input = (numpy.asfarray(all_values[<span class="number">1</span>:]) / <span class="number">255.0</span> * <span class="number">0.99</span>) + <span class="number">0.01</span></span><br><span class="line">		imag_array = numpy.asfarray(scaled_input).reshape((<span class="number">28</span>,<span class="number">28</span>))</span><br><span class="line">		<span class="string">'''</span></span><br><span class="line"><span class="string">		plt.imshow(imag_array,cmap='Greys',animated=True)</span></span><br><span class="line"><span class="string">		plt.draw()</span></span><br><span class="line"><span class="string">		plt.pause(0.00001)</span></span><br><span class="line"><span class="string">		'''</span></span><br><span class="line">		net_answer = Network.query(scaled_input).tolist().index(max(Network.final_outputs))</span><br><span class="line">		num_counter[lable] += <span class="number">1</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> lable == int(net_answer):</span><br><span class="line">			correct_test += <span class="number">1</span></span><br><span class="line">			correct[lable] += <span class="number">1</span></span><br><span class="line">		p_test.update(all_test + <span class="number">1</span>)</span><br><span class="line">		all_test += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">	p_test.finish()</span><br><span class="line">	print(<span class="string">"Finish Test.\n"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 网络性能</span></span><br><span class="line">	performance = correct_test/all_test</span><br><span class="line">	Per_num_performance = []</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">		<span class="comment"># 测试集可能不包含某些数字，故捕捉除以0异常</span></span><br><span class="line">		<span class="keyword">try</span>:</span><br><span class="line">			Per_num_performance.append(correct[i]/num_counter[i])</span><br><span class="line">		<span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">			Per_num_performance.append(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">	print(<span class="string">"The correctRate of per number： "</span>,Per_num_performance)</span><br><span class="line">	print(<span class="string">"Performance of the NeuralNetwork： "</span>,performance*<span class="number">100</span>)</span><br><span class="line">	<span class="keyword">return</span> performance</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义网络规模与学习率</span></span><br><span class="line">input_nodes = <span class="number">784</span></span><br><span class="line">hidden_nodes = <span class="number">700</span></span><br><span class="line">hidden_nodes_2 = <span class="number">700</span></span><br><span class="line"><span class="comment">#hidden_nodes_3 = 100</span></span><br><span class="line">output_nodes = <span class="number">10</span></span><br><span class="line">learningrate = <span class="number">0.0001</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 定义训练世代数</span></span><br><span class="line">	epochs = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">#创建神经网络实例</span></span><br><span class="line">	Net = neuralNetwork(input_nodes,hidden_nodes,hidden_nodes_2,output_nodes,learningrate)</span><br><span class="line"></span><br><span class="line">	<span class="comment">#plt.imshow(final_outputs,interpolation="nearest")</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 准备训练数据</span></span><br><span class="line">	data_file = open(<span class="string">"mnist_train.csv"</span>,<span class="string">'r'</span>)</span><br><span class="line">	data_list = data_file.readlines()</span><br><span class="line">	N_train = len(data_list)</span><br><span class="line">	data_file.close()</span><br><span class="line">	<span class="comment"># 动画显示</span></span><br><span class="line">	<span class="comment">#plt.figure(1)</span></span><br><span class="line"></span><br><span class="line">	print(<span class="string">"Training："</span>, epochs, <span class="string">"epochs..."</span>)</span><br><span class="line">	<span class="keyword">for</span> e <span class="keyword">in</span> range(epochs):</span><br><span class="line">		<span class="comment"># 训练进度条</span></span><br><span class="line">		print(<span class="string">'\nThe '</span>+str(e+<span class="number">1</span>)+<span class="string">'th epoch trainning:\n'</span>)</span><br><span class="line">		p_train = progressbar.ProgressBar()</span><br><span class="line">		p_train.start(N_train)</span><br><span class="line">		i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> img_list <span class="keyword">in</span> data_list:</span><br><span class="line">			<span class="comment"># 以逗号分割记录</span></span><br><span class="line">			all_values = img_list.split(<span class="string">','</span>)</span><br><span class="line">			<span class="comment"># 将0-255映射到0.01-0.99</span></span><br><span class="line">			scaled_input = (numpy.asfarray(all_values[<span class="number">1</span>:]) / <span class="number">255.0</span> * <span class="number">0.99</span>) + <span class="number">0.01</span></span><br><span class="line">			imag_array = numpy.asfarray(scaled_input).reshape((<span class="number">28</span>,<span class="number">28</span>))</span><br><span class="line">			<span class="comment">#plt.imshow(imag_array,cmap='Greys',animated=True)</span></span><br><span class="line">			<span class="comment">#plt.draw()</span></span><br><span class="line">			<span class="comment">#plt.pause(0.00001)</span></span><br><span class="line"></span><br><span class="line">			<span class="comment">#旋转图像生成新的训练集</span></span><br><span class="line">			input_plus_10imag = scipy.ndimage.interpolation.rotate(imag_array,<span class="number">10</span>,cval=<span class="number">0.01</span>,reshape=<span class="literal">False</span>)</span><br><span class="line">			input_minus_10imag = scipy.ndimage.interpolation.rotate(imag_array,<span class="number">-10</span>,cval=<span class="number">0.01</span>,reshape=<span class="literal">False</span>)</span><br><span class="line">			input_plus10 = input_plus_10imag.reshape((<span class="number">1</span>,<span class="number">784</span>))</span><br><span class="line">			input_minus10 = input_minus_10imag.reshape((<span class="number">1</span>, <span class="number">784</span>))</span><br><span class="line">			<span class="comment"># 根据标签创建目标值向量</span></span><br><span class="line">			targets = numpy.zeros(output_nodes) + <span class="number">0.01</span></span><br><span class="line">			targets[int(all_values[<span class="number">0</span>])] = <span class="number">0.99</span></span><br><span class="line"></span><br><span class="line">			<span class="comment"># 用三个训练集训练神经网络</span></span><br><span class="line">			Net.train(scaled_input,targets)</span><br><span class="line">			Net.train(input_plus10,targets)</span><br><span class="line">			Net.train(input_minus10,targets)</span><br><span class="line"></span><br><span class="line">			<span class="comment">#time.sleep(0.01)</span></span><br><span class="line">			p_train.update(i+<span class="number">1</span>)</span><br><span class="line">			i+=<span class="number">1</span></span><br><span class="line">		p_train.finish()</span><br><span class="line">		</span><br><span class="line">	print(<span class="string">"\nTrainning finish.\n"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 将训练好的神经网络链接权重输出到csv文件中</span></span><br><span class="line">	numpy.savetxt(<span class="string">'wih_file.csv'</span>,Net.wih_,fmt=<span class="string">'%f'</span>)</span><br><span class="line">	numpy.savetxt(<span class="string">'wh12_file.csv'</span>,Net.wh12_,fmt=<span class="string">'%f'</span>)</span><br><span class="line">	<span class="comment">#numpy.savetxt('wh23_file.csv',Net.wh23_,fmt='%f')</span></span><br><span class="line">	numpy.savetxt(<span class="string">'who_file.csv'</span>,Net.who_,fmt=<span class="string">'%f'</span>)</span><br></pre></td></tr></table></figure>
+
+<p> <font face='黑体' size=3px color=green> network_test.py </font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> neural_network <span class="keyword">as</span> nk</span><br><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> pl</span><br><span class="line"><span class="keyword">import</span> scipy.special</span><br><span class="line"><span class="keyword">import</span> scipy.ndimage.interpolation</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> progressbar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试神经网络</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">	input_nodes = nk.input_nodes</span><br><span class="line">	hidden_nodes = nk.hidden_nodes</span><br><span class="line">	hidden_nodes_2 = nk.hidden_nodes_2</span><br><span class="line">	<span class="comment">#hidden_nodes_3 = nk.hidden_nodes_3</span></span><br><span class="line">	output_nodes = nk.output_nodes</span><br><span class="line">	learningrate = nk.learningrate</span><br><span class="line">	Network = nk.neuralNetwork(input_nodes,hidden_nodes,hidden_nodes_2,output_nodes,learningrate)</span><br><span class="line">	nk.test(Network,<span class="string">"mnist_test.csv"</span>)</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line"><span class="comment"># hidden_nodes = 200 lr = 0.01 performance = 97.34</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h4><ol>
+<li>cd进入代码所在文件夹</li>
+<li>(训练神经网络)输入命令：<font color=green face='黑体'>python</font> <font color=blue face='黑体'>neural_network.py</font></li>
+</ol>
+<p><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/20190607011216578.png" alt="Training"></p>
+<ol start="3">
+<li>（测试神经网络）输入命令：<font color=green face='黑体'>python</font> <font color=blue face='黑体'>network_test.py</font></li>
+</ol>
+<p><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/20190607011510082.png" alt="Testing"></p>
+<p><font size=1px color=red>[Warning] 运行时请确保训练集和测试集数据的.csv文件与源代码文件在同一个目录下，否则请修改源码中的文件路径</font></p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/ML/" rel="tag">ML</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/06/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%BB%8B%E7%BB%8D(0)/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">深度学习-卷积神经网络(0)</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/06/04/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/">
+                <span class="level-item">人工神经网络学习笔记（2）</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: false,
+        verify: false,
+        app_id: '4JmiDqb5V13RiT71NOqey8Pv-gzGzoHsz',
+        app_key: 'xnbAE6zvua5Lb5sSxqCumyvn',
+        placeholder: '快评论吧'
+    });
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-4-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="好多鱼">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        好多鱼
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        程序猿
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>China,Beijing</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            14
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            4
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            6
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/springcloud0/" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/springcloud0/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#Python-numpy编码实现人工神经网络">
+        <span class="has-mr-6">1</span>
+        <span>Python-numpy编码实现人工神经网络</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#准备数据：">
+        <span class="has-mr-6">1.1</span>
+        <span>准备数据：</span>
+        </a></li><li>
+        <a class="is-flex" href="#编码实现">
+        <span class="has-mr-6">1.2</span>
+        <span>编码实现</span>
+        </a></li><li>
+        <a class="is-flex" href="#运行程序">
+        <span class="has-mr-6">1.3</span>
+        <span>运行程序</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/%E5%B7%A5%E5%85%B7/">
+            <span class="level-start">
+                <span class="level-item">工具</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E6%95%99%E7%A8%8B/">
+            <span class="level-start">
+                <span class="level-item">教程</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">4</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+            <span class="level-start">
+                <span class="level-item">数据结构</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+            <span class="level-start">
+                <span class="level-item">机器学习</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">6</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+    
+
+        <div class="column-right-shadow  ">
+        
+            <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/06/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%BB%8B%E7%BB%8D(0)/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8%E7%BA%A7%E4%BB%8B%E7%BB%8D/ml.jpg" alt="深度学习-卷积神经网络(0)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-19T02:12:58.000Z">2019-06-19</time></div>
+                    <a href="/2019/06/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%BB%8B%E7%BB%8D(0)/" class="title has-link-black-ter is-size-6 has-text-weight-normal">深度学习-卷积神经网络(0)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/07/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/ml_2.png" alt="人工神经网络学习笔记（3）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-07T04:02:15.000Z">2019-06-07</time></div>
+                    <a href="/2019/06/07/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" class="title has-link-black-ter is-size-6 has-text-weight-normal">人工神经网络学习笔记（3）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/04/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/ml_3.png" alt="人工神经网络学习笔记（2）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-04T02:02:53.000Z">2019-06-04</time></div>
+                    <a href="/2019/06/04/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" class="title has-link-black-ter is-size-6 has-text-weight-normal">人工神经网络学习笔记（2）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/03/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E6%AF%94%E8%AE%B0%EF%BC%881%EF%BC%89/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E6%AF%94%E8%AE%B0%EF%BC%881%EF%BC%89/ml.jpg" alt="人工神经网络学习笔记（1）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-03T07:16:03.000Z">2019-06-03</time></div>
+                    <a href="/2019/06/03/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E6%AF%94%E8%AE%B0%EF%BC%881%EF%BC%89/" class="title has-link-black-ter is-size-6 has-text-weight-normal">人工神经网络学习笔记（1）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/03/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%880%EF%BC%89/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%880%EF%BC%89/ml_1.jpg" alt="人工神经网络学习笔记（0）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-03T06:25:33.000Z">2019-06-03</time></div>
+                    <a href="/2019/06/03/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%880%EF%BC%89/" class="title has-link-black-ter is-size-6 has-text-weight-normal">人工神经网络学习笔记（0）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Array/" style="font-size: 10px;">Array</a> <a href="/tags/Blog/" style="font-size: 10px;">Blog</a> <a href="/tags/Hexo/" style="font-size: 15px;">Hexo</a> <a href="/tags/ML/" style="font-size: 20px;">ML</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Array/">
+                        <span class="tag">Array</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Blog/">
+                        <span class="tag">Blog</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Hexo/">
+                        <span class="tag">Hexo</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ML/">
+                        <span class="tag">ML</span>
+                        <span class="tag is-grey">6</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Tools/">
+                        <span class="tag">Tools</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Tree/">
+                        <span class="tag">Tree</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                 
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="人工神经网络学习笔记（3）" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 haoduoyu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                共<span id="busuanzi_value_site_uv">0</span>个访客
+                </span>
+                
+                </p>
+                <br>
+                <a class="has-link-black-ter-2 -link" href="http://icp.chinaz.com/info?q=songaw.com" target="_blank">京ICP备17064007号</a>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://www.songaw.com',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script type="text/javascript">
+      var windowWidth = $(window).width();
+      if (windowWidth > 480) {
+        document.write('<script type="text/javascript" src="/js/src/snow.js"><\/script>');
+      }
+    </script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

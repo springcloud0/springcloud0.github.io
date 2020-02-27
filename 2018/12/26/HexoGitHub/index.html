@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>【教程】Hexo+Github博客搭建 - 好多鱼</title>
+
+
+    <meta name="description" content="开始">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【教程】Hexo+Github博客搭建">
+<meta property="og:url" content="http://www.songaw.com/2018/12/26/HexoGitHub/index.html">
+<meta property="og:site_name" content="好多鱼">
+<meta property="og:description" content="开始">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qcloud.coding.net/u/vincentqin/p/blogResource/git/raw/master/build-a-website-using-hexo/hexo-cover.png">
+<meta property="article:published_time" content="2018-12-26T02:20:24.000Z">
+<meta property="article:modified_time" content="2019-12-10T17:46:20.000Z">
+<meta property="article:author" content="haoduoyu">
+<meta property="article:tag" content="Blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qcloud.coding.net/u/vincentqin/p/blogResource/git/raw/master/build-a-website-using-hexo/hexo-cover.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/5.12.0-1/css/all.css">
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="【教程】Hexo+Github博客搭建" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="My GitHub" href="https://github.com/springcloud0/">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-10-tablet is-10-desktop is-10-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="https://qcloud.coding.net/u/vincentqin/p/blogResource/git/raw/master/build-a-website-using-hexo/hexo-cover.png" alt="【教程】Hexo+Github博客搭建">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-12-26T02:20:24.000Z">2018-12-26</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    7 分钟 读完 (大约 995 个字)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                【教程】Hexo+Github博客搭建
+            
+        </h1>
+        <div class="content">
+            <h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><a id="more"></a>
+<hr>
+<blockquote>
+<p>对于萌新来说，Hexo是一个非常容易上手的轻量级博客平台，只需简单的配置便可以打造令人满意的博客页面，下面是我自己搭建博课的流程，在此记录以备后续的需要。</p>
+</blockquote>
+<hr>
+<h2 id="Step1"><a href="#Step1" class="headerlink" title="Step1:"></a>Step1:</h2><p><strong>前期准备:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 安装Node.js : <a href="https://nodejs.org/zh-cn/">Download</a></li>
+<li><input disabled="" type="checkbox"> 安装git for win: <a href="https://git-scm.com/downloads">Download</a></li>
+<li><input disabled="" type="checkbox"> 注册GitHub账号: <a href="https://github.com/">Github.com</a></li>
+</ul>
+<hr>
+<h2 id="Step2"><a href="#Step2" class="headerlink" title="Step2:"></a>Step2:</h2><ul>
+<li><input disabled="" type="checkbox"> 在GitHub中新建（New）一个库（Repositories），用来存放网站内容：<br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128105238488.png" alt=""></li>
+</ul>
+<hr>
+<p><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128105923772.png" alt=""></p>
+<hr>
+<h2 id="Step3"><a href="#Step3" class="headerlink" title="Step3:"></a>Step3:</h2><p><strong>连接git与GitHub账户：</strong></p>
+<ul>
+<li>在桌面点击鼠标右键，选择Git Bash Here 会跳出终端窗口输入命令并回车：<blockquote>
+<p>ssh-keygen<br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128111826521.png" alt=""></p>
+</blockquote>
+</li>
+<li>根据路径找到密钥文件并打开：<br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128112227406.png" alt=""><br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128112429949.png" alt=""></li>
+<li>打开你的GitHub账户点击右上角的头像选择setting –&gt; SSH and GPG keys:<br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128112644863.png" alt=""><br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128113042424.png" alt=""><br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128113504140.png" alt=""><blockquote>
+<p>至此，成功连接GIt与GitHub账户。</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h2 id="Step4"><a href="#Step4" class="headerlink" title="Step4:"></a>Step4:</h2><p><em>*安装Hexo：</em></p>
+<ul>
+<li>在桌面打开Git Bash Here终端输入命令：<blockquote>
+<p>npm install -g hexo-cli</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128114514842.png" alt=""></p>
+<blockquote>
+<p>如果许久后未能安装，说明网络太慢，可更换安装源<br>Ctrl+C，在终端输入：<br>npm config set registry <a href="http://registry.cnpmjs.org">http://registry.cnpmjs.org</a></p>
+</blockquote>
+<hr>
+<ul>
+<li><p>安装成功后，在电脑的任意磁盘内建立文件夹以存放Hexo网站：</p>
+</li>
+<li><p>这是我创建的路径：blog文件夹将被用于博客<br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128115144081.png" alt=""></p>
+</li>
+<li><p>进入blog文件夹点击鼠标右键进入Git Bash Here终端，依次执行命令：</p>
+<blockquote>
+<p>hexo init  //初始化文件夹为博客根目录<br>hexo install //安装必要依赖文件</p>
+</blockquote>
+</li>
+<li><p>安装hexo-deployer-git插件：</p>
+<blockquote>
+<p>npm install hexo-deployer-git –save</p>
+</blockquote>
+</li>
+<li><p>到此，还记得之前创建的GitHub库吗？ 打开该仓库复制仓库的SSH地址：<br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128120739091.png" alt=""></p>
+</li>
+<li><p>进入网站根目录/blog,用编辑器（vs code)打开 _config.yml 网站配置文件：<br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128121123562.png" alt=""></p>
+</li>
+<li><p>修改_config.yml 配置文件保存并退出：<br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128121726691.png" alt=""></p>
+</li>
+<li><p>回到Git终端，执行命令：</p>
+<blockquote>
+<p>hexo g -d //将网站部署到GitHub上</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128122048305.png" alt=""></p>
+<ul>
+<li>至此，可在浏览器内输入你的博客地址查看是否成功：<br><img src="http://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/Hexo+Github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B%EF%BC%88Windows%EF%BC%89/20190128122615866.png" alt=""></li>
+</ul>
+<hr>
+<h2 id="Step5"><a href="#Step5" class="headerlink" title="Step5:"></a>Step5:</h2><p><strong>如何写作：</strong></p>
+<ul>
+<li>回到blog文件夹内，/source/_post/ 文件夹内的Markdown文件就是你的博文存放处</li>
+<li>你可以新建md文档写作并用hexo g -d 命令将更新的博文部署到网站上</li>
+<li>也可以利用HexoEdit编辑器写作并上传，详情可见我的另一篇博文<a href="https://ccyh.xyz/2019/01/27/HexoEditor/">HesoEditor教程</a></li>
+<li>关于Markdown语法网上有许多教程可供学习<a href="https://markdown-zh.readthedocs.io/en/latest/">Markdown中文文档</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>关于Hexo主题更换配置我会在以后的文章中介绍，若有错误请指明，不甚感激。<br>Thanks for your watching !!!!!!</p>
+</blockquote>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Blog/" rel="tag">Blog</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2018/12/27/HexoEditor/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">【工具】HexoEditor编辑器的安装配置及使用</span>
+            </a>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: false,
+        verify: false,
+        app_id: '4JmiDqb5V13RiT71NOqey8Pv-gzGzoHsz',
+        app_key: 'xnbAE6zvua5Lb5sSxqCumyvn',
+        placeholder: '快评论吧'
+    });
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-4-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="好多鱼">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        好多鱼
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        程序猿
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>China,Beijing</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            14
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            4
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            6
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/springcloud0/" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/springcloud0/">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#开始">
+        <span class="has-mr-6">1</span>
+        <span>开始</span>
+        </a></li><li>
+        <a class="is-flex" href="#Step1">
+        <span class="has-mr-6">2</span>
+        <span>Step1:</span>
+        </a></li><li>
+        <a class="is-flex" href="#Step2">
+        <span class="has-mr-6">3</span>
+        <span>Step2:</span>
+        </a></li><li>
+        <a class="is-flex" href="#Step3">
+        <span class="has-mr-6">4</span>
+        <span>Step3:</span>
+        </a></li><li>
+        <a class="is-flex" href="#Step4">
+        <span class="has-mr-6">5</span>
+        <span>Step4:</span>
+        </a></li><li>
+        <a class="is-flex" href="#Step5">
+        <span class="has-mr-6">6</span>
+        <span>Step5:</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/%E5%B7%A5%E5%85%B7/">
+            <span class="level-start">
+                <span class="level-item">工具</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E6%95%99%E7%A8%8B/">
+            <span class="level-start">
+                <span class="level-item">教程</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">4</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+            <span class="level-start">
+                <span class="level-item">数据结构</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+            <span class="level-start">
+                <span class="level-item">机器学习</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">6</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+    
+
+        <div class="column-right-shadow  ">
+        
+            <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/06/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%BB%8B%E7%BB%8D(0)/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8%E7%BA%A7%E4%BB%8B%E7%BB%8D/ml.jpg" alt="深度学习-卷积神经网络(0)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-19T02:12:58.000Z">2019-06-19</time></div>
+                    <a href="/2019/06/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%BB%8B%E7%BB%8D(0)/" class="title has-link-black-ter is-size-6 has-text-weight-normal">深度学习-卷积神经网络(0)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/07/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/ml_2.png" alt="人工神经网络学习笔记（3）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-07T04:02:15.000Z">2019-06-07</time></div>
+                    <a href="/2019/06/07/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" class="title has-link-black-ter is-size-6 has-text-weight-normal">人工神经网络学习笔记（3）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/04/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/ml_3.png" alt="人工神经网络学习笔记（2）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-04T02:02:53.000Z">2019-06-04</time></div>
+                    <a href="/2019/06/04/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" class="title has-link-black-ter is-size-6 has-text-weight-normal">人工神经网络学习笔记（2）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/03/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E6%AF%94%E8%AE%B0%EF%BC%881%EF%BC%89/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E6%AF%94%E8%AE%B0%EF%BC%881%EF%BC%89/ml.jpg" alt="人工神经网络学习笔记（1）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-03T07:16:03.000Z">2019-06-03</time></div>
+                    <a href="/2019/06/03/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E6%AF%94%E8%AE%B0%EF%BC%881%EF%BC%89/" class="title has-link-black-ter is-size-6 has-text-weight-normal">人工神经网络学习笔记（1）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/03/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%880%EF%BC%89/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://hexoblog-1257022783.cos.ap-chengdu.myqcloud.com/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%880%EF%BC%89/ml_1.jpg" alt="人工神经网络学习笔记（0）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-03T06:25:33.000Z">2019-06-03</time></div>
+                    <a href="/2019/06/03/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%880%EF%BC%89/" class="title has-link-black-ter is-size-6 has-text-weight-normal">人工神经网络学习笔记（0）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Array/" style="font-size: 10px;">Array</a> <a href="/tags/Blog/" style="font-size: 10px;">Blog</a> <a href="/tags/Hexo/" style="font-size: 15px;">Hexo</a> <a href="/tags/ML/" style="font-size: 20px;">ML</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Array/">
+                        <span class="tag">Array</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Blog/">
+                        <span class="tag">Blog</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Hexo/">
+                        <span class="tag">Hexo</span>
+                        <span class="tag is-grey">3</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/ML/">
+                        <span class="tag">ML</span>
+                        <span class="tag is-grey">6</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Tools/">
+                        <span class="tag">Tools</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Tree/">
+                        <span class="tag">Tree</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                 
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="【教程】Hexo+Github博客搭建" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 haoduoyu&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> & <a
+                        href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                共<span id="busuanzi_value_site_uv">0</span>个访客
+                </span>
+                
+                </p>
+                <br>
+                <a class="has-link-black-ter-2 -link" href="http://icp.chinaz.com/info?q=songaw.com" target="_blank">京ICP备17064007号</a>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'http://www.songaw.com',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+    <script type="text/javascript">
+      var windowWidth = $(window).width();
+      if (windowWidth > 480) {
+        document.write('<script type="text/javascript" src="/js/src/snow.js"><\/script>');
+      }
+    </script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
